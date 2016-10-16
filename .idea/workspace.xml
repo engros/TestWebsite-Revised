@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6af46823-ca5e-4625-ac38-046c4f71d4ac" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/views/static_pages/about.html" afterPath="$PROJECT_DIR$/app/views/static_pages/about.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/TestWebsite.iml" afterPath="$PROJECT_DIR$/.idea/TestWebsite.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/static_pages_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/static_pages_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/layouts/application.html.erb" afterPath="$PROJECT_DIR$/app/views/layouts/application.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/static_pages/help.html.erb" afterPath="$PROJECT_DIR$/app/views/static_pages/help.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/static_pages/home.html.erb" afterPath="$PROJECT_DIR$/app/views/static_pages/home.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/database.yml" afterPath="$PROJECT_DIR$/config/database.yml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/routes.rb" afterPath="$PROJECT_DIR$/config/routes.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/controllers/static_pages_controller_test.rb" afterPath="$PROJECT_DIR$/test/controllers/static_pages_controller_test.rb" />
     </list>
     <ignored path="TestWebsite.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -99,8 +90,8 @@
       <file leaf-file-name="about.html.erb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/static_pages/about.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" column="7" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+            <state relative-caret-position="306">
+              <caret line="18" column="7" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="7" />
               <folding />
             </state>
           </provider>
@@ -660,7 +651,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1476581450532</updated>
-      <workItem from="1476581451919" duration="5581000" />
+      <workItem from="1476581451919" duration="5727000" />
     </task>
     <task id="LOCAL-00001" summary="adding about page">
       <created>1476586235965</created>
@@ -673,9 +664,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="test__TestWebsite - 2016.10.15 at 22h 24m 43s.xml">
-      <configuration name="test: TestWebsite" configurationId="RakeRunConfigurationType" />
-    </history-entry>
     <history-entry file="test__TestWebsite - 2016.10.15 at 22h 38m 21s.xml">
       <configuration name="test: TestWebsite" configurationId="RakeRunConfigurationType" />
     </history-entry>
@@ -703,20 +691,23 @@
     <history-entry file="test__TestWebsite - 2016.10.15 at 22h 59m 06s.xml">
       <configuration name="test: TestWebsite" configurationId="RakeRunConfigurationType" />
     </history-entry>
+    <history-entry file="test__TestWebsite - 2016.10.15 at 23h 04m 42s.xml">
+      <configuration name="test: TestWebsite" configurationId="RakeRunConfigurationType" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5581000" />
+    <option name="totallyTimeSpent" value="5727000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-1688" y="-8" width="1696" height="931" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32901555" sideWeight="0.5122249" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901555" sideWeight="0.49511003" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901555" sideWeight="0.49511003" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32901555" sideWeight="0.48777506" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901555" sideWeight="0.49266502" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32901555" sideWeight="0.48777506" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901555" sideWeight="0.48777506" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901555" sideWeight="0.48533008" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32901555" sideWeight="0.49755502" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -853,8 +844,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/static_pages/about.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="7" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+        <state relative-caret-position="306">
+          <caret line="18" column="7" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="7" />
           <folding />
         </state>
       </provider>
