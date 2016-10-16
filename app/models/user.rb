@@ -8,3 +8,10 @@ class User < ApplicationRecord
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }
 end
+
+# VALID_EMAIL_REGEX is a constant, ensures that only email addresses that match the pattern will be considered valid.
+# regular expression (or regex), which is a powerful (and often cryptic) language for matching patterns in strings.
+# uniqueness: { case_sensitive: false } ignores case, i.e., foo@bar.com is treated the same as FOO@BAR.COM or FoO@BAr.coM
+# before_save callback to downcase the email attribute before saving the user.
+# The only requirement for has_secure_password to work its magic is for the corresponding model to have an attribute called password_digest, encryption is by bcrypt.
+# has_secure_password enforces validations on the virtual password and password_confirmation attributes

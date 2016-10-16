@@ -2,3 +2,10 @@
 <%= stylesheet_link_tag    'application', media: 'all',
                            'data-turbolinks-track': 'reload' %>
 <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+
+<!--
+This code arranges to include the application stylesheet and JavaScript, which are part of the asset pipeline
+together with the Rails method csrf_meta_tags, which prevents cross-site request forgery (CSRF), a type of malicious web attack.
+-->
+
+<!--stylesheet_link_tag section includes application.css for all media types -->

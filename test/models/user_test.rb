@@ -22,12 +22,12 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "name should not be too long" do
-    @user.name = "a" * 51
+    @user.name = "a" * 51   #means verifying that names of 51 characters are too long
     assert_not @user.valid?
   end
 
   test "email should not be too long" do
-    @user.email = "a" * 244 + "@example.com"
+    @user.email = "a" * 244 + "@example.com" #there’s a chance that a user’s email address could overrun the maximum length of strings, which for many databases is 255.
     assert_not @user.valid?
   end
 
@@ -73,3 +73,5 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
 end
+
+#inspect method, which returns a string with a literal representation of the object it’s called on

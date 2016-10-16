@@ -26,3 +26,5 @@ class StaticPagesControllerTest < ActionDispatch::IntegrationTest
     assert_select "title", "Contact | Ruby on Rails Tutorial Sample App"
   end
 end
+
+# assert_select method, which lets us test for the presence of a particular HTML tag (sometimes called a “selector”, hence the name):

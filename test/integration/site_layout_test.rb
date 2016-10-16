@@ -11,3 +11,6 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", contact_path
   end
 end
+
+# assert_select method, which lets us test for the presence of a particular HTML tag (sometimes called a “selector”, hence the name):
+

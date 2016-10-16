@@ -3,13 +3,24 @@
 <head>
   <title><%= full_title(yield(:title)) %></title>
   <%= render 'layouts/rails_default' %>
-  <%= render 'layouts/shim' %>
+  <%= render 'layouts/shim' %> <!--look for a file called app/views/layouts/_shim.html.erb -->
 </head>
 <body>
 <%= render 'layouts/header' %>
 <div class="container">
   <%= yield %>
   <%= render 'layouts/footer' %>
+  <%= debug(params) if Rails.env.development? %>
 </div>
 </body>
 </html>
+
+<!--
+<'%= yield %> This code is responsible for inserting the contents of each page into the layout.
+-->
+
+<!--
+we’ve replaced the HTML shim stylesheet lines with a single call to a Rails helper called render.
+The effect of this line is to look for a file called app/views/layouts/_shim.html.erb, evaluate its contents, and insert the results into the view.-->
+
+<!--Note the leading underscore on the filename _shim.html.erb; this underscore is the universal convention for naming partials, and among other things makes it possible to identify all the partials in a directory at a glance.-->
