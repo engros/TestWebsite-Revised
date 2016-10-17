@@ -1,0 +1,20 @@
+<!--A partial for displaying form submission error messages.-->
+
+<% if @user.errors.any? %>
+    <div id="error_explanation">
+      <div class="alert alert-danger">
+        The form contains <%= pluralize(@user.errors.count, "error") %>.
+      </div>
+      <ul>
+        <% @user.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+<% end %>
+
+<!--
+pluralize takes an integer argument and then returns the number with a properly pluralized version of its second argument.
+Underlying this method is a powerful inflector that knows how to pluralize a large number of words, including many with irregular plurals:
+returns "0 errors", "1 error", "2 errors"
+-->

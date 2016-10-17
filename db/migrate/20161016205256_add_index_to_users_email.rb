@@ -4,7 +4,8 @@ class AddIndexToUsersEmail < ActiveRecord::Migration[5.0]
   end
 end
 
-=begin
-This uses a Rails method called add_index to add an index on the email column of the users table.
-The index by itself doesn’t enforce uniqueness, but the option unique: true does.
-An index prevents full scan search on database, instead index directs to a specific address on database.    =end
+
+#This uses a Rails method called add_index to add an index on the email column of the users table.
+#The index by itself doesn’t enforce uniqueness, but the option unique: true does.
+#An index prevents full scan search on database, instead index directs to a specific address on database.
+

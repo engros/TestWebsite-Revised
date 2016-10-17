@@ -6,12 +6,15 @@
   <%= render 'layouts/shim' %> <!--look for a file called app/views/layouts/_shim.html.erb -->
 </head>
 <body>
-<%= render 'layouts/header' %>
-<div class="container">
-  <%= yield %>
-  <%= render 'layouts/footer' %>
-  <%= debug(params) if Rails.env.development? %>
-</div>
+  <%= render 'layouts/header' %>
+  <div class="container">
+    <% flash.each do |message_type, message| %>
+        <div class="alert alert-<%= message_type %>"><%= message %></div>
+    <% end %>
+    <%= yield %>
+    <%= render 'layouts/footer' %>
+    <%= debug(params) if Rails.env.development? %>
+  </div>
 </body>
 </html>
 
@@ -24,3 +27,8 @@ we’ve replaced the HTML shim stylesheet lines with a single call to a Rails he
 The effect of this line is to look for a file called app/views/layouts/_shim.html.erb, evaluate its contents, and insert the results into the view.-->
 
 <!--Note the leading underscore on the filename _shim.html.erb; this underscore is the universal convention for naming partials, and among other things makes it possible to identify all the partials in a directory at a glance.-->
+<!--Rails.env.development? is true only in a development environment-->
+
+<!--
+flash is a message that appears on the subsequent page (in this case, welcoming our
+new user to the application) and then disappears upon visiting a second page or on page reload.-->
