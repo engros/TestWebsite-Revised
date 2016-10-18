@@ -1,2 +1,10 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+michael:
+  name: Michael Example
+  email: michael@example.com
+  password_digest: <%= User.digest('password') %>
 
+# Fixtures used for testing such as database values so you don't have to create users in the database to test website signup,login,logout
+
+# password_digest allows us to create the valid password digest for the test user.
+#(Remember there is no password column in the database! So we need this fixture to test!)

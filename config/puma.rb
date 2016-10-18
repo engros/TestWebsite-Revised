@@ -4,7 +4,7 @@
 # the maximum value specified for Puma. Default is set to 5 threads for minimum
 # and maximum, this matches the default thread size of Active Record.
 #
-workers Integer(ENV['WEB_CONCURRENCY'] || 2)
+# workers Integer(ENV['WEB_CONCURRENCY'] || 2) # Does not work in windows developement, turn it back on in production
 threads_count = Integer(ENV['RAILS_MAX_THREADS'] || 5)
 threads threads_count, threads_count
 

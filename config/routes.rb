@@ -1,10 +1,13 @@
 Rails.application.routes.draw do
-  root 'static_pages#home'
-  get  '/help',    to: 'static_pages#help'
-  get  '/about',   to: 'static_pages#about'
-  get  '/contact', to: 'static_pages#contact'
-  get  '/signup',  to: 'users#new'
-  post '/signup',  to: 'users#create'
+  root   'static_pages#home'
+  get    '/help',    to: 'static_pages#help'
+  get    '/about',   to: 'static_pages#about'
+  get    '/contact', to: 'static_pages#contact'
+  get    '/signup',  to: 'users#new'
+  post   '/signup',  to: 'users#create'
+  get    '/login',   to: 'sessions#new'
+  post   '/login',   to: 'sessions#create'
+  delete '/logout',  to: 'sessions#destroy'
   resources :users
 end
 
@@ -16,4 +19,8 @@ As with the rule for the root route, this creates two named routes, help_path an
 =begin resources :users, it endows our sample application with all the actions needed for a
 RESTful Users resource,6 along with a large number of named routes for generating user URLs.
 Use rake routes to look at current RESTful routes
+=end
+
+=begin
+When login_path is used as passed value inside a form_for, Rails infers the action as a POST to create action
 =end

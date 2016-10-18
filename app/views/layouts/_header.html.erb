@@ -3,12 +3,31 @@
     <%= link_to "sample app", root_path, id: "logo" %>
     <nav>
       <ul class="nav navbar-nav navbar-right">
-        <li><%= link_to "Home",    root_path %></li>
-        <li><%= link_to "Help",    help_path %></li>
-        <li><%= link_to "Log in", '#' %></li>
+        <li><%= link_to "Home", root_path %></li>
+        <li><%= link_to "Help", help_path %></li>
+        <% if logged_in? %> <!-- Changes links only if a user is logged in, otherwise there are less available page options-->
+            <li><%= link_to "Users", '#' %></li>
+            <li class="dropdown"> <!--A dropdown layout for Account link only when user is logged in -->
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                Account <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li><%= link_to "Profile", current_user %></li>
+                <li><%= link_to "Settings", '#' %></li>
+                <li class="divider"></li>
+                <li>
+                  <%= link_to "Log out", logout_path, method: "delete" %> <!-- HTTP DELETE request-->
+                </li>
+              </ul>
+            </li>
+        <% else %>
+            <li><%= link_to "Log in", login_path %></li> <!--if user is not logged in, offer to log in -->
+        <% end %>
       </ul>
     </nav>
   </div>
 </header>
 
 <!--A partial for the site header.-->
+<!--Note that sessions_helper is used to return true if the user is logged in or not with logged_in method called -->
+<!--To activate the dropdown menu, we need to include Bootstrap’s custom JavaScript library in the Rails asset pipeline’s application.js-->
