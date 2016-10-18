@@ -30,10 +30,22 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     delete logout_path
     assert_not is_logged_in? #check that user is not in session
     assert_redirected_to root_url #check redirect go back to home page
+    # Simulate a user clicking logout in a second window.
+    delete logout_path
     follow_redirect! #actually go to that home page
     assert_select "a[href=?]", login_path     #verify that login link appears after logout
     assert_select "a[href=?]", logout_path,      count: 0 #verify that logout link has disappeared
     assert_select "a[href=?]", user_path(@user), count: 0 #verify that profile link disappeared
+  end
+
+  test "login with remembering" do
+    log_in_as(@user, remember_me: '1')
+    assert_not_nil cookies['remember_token']
+  end
+
+  test "login without remembering" do
+    log_in_as(@user, remember_me: '0')
+    assert_nil cookies['remember_token']
   end
 
 end
@@ -64,5 +76,11 @@ Show the user that just logged in, account page
 Verify that the login link disappears, since you just logged in.
 Verify that once logged in a logout link appears
 Verify that a profile link appears.
-
+logout
+check if user is still logged in
+(subtlety bug check) simulate second window logout
+go back to home page
+verify login link appears in home page after logout
+verify that logout link disappeard since already logged out
+verify that profile link disappears since already logged out
 =end
