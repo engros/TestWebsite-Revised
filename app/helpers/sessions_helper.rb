@@ -12,6 +12,11 @@ module SessionsHelper
     cookies.permanent[:remember_token] = user.remember_token #permanent is Rails method setting cookies to expire 20 years; create permanent cookies for remember token
   end
 
+  # Returns true if the given user is the current user.
+  def current_user?(user)
+    user == current_user
+  end
+
   # Returns the user corresponding to the remember token cookie.
   def current_user
     if (user_id = session[:user_id])
@@ -44,6 +49,18 @@ module SessionsHelper
     session.delete(:user_id)
     @current_user = nil
   end
+
+  # Redirects to stored location (or to the default).
+  def redirect_back_or(default)
+    redirect_to(session[:forwarding_url] || default) #go to requested page if it exists, otherwise go to the dafault page (eg. profile instead of edit)
+    session.delete(:forwarding_url) #delete the stored requested url
+  end
+
+  # Stores the URL trying to be accessed.
+  def store_location
+    session[:forwarding_url] = request.original_url if request.get? #uses requested object via request.original_url to get the URL of the requested page
+  end
+
 end
 
 =begin
@@ -66,5 +83,11 @@ we arrange to make them available in all our controllers as well
 
 -the current_user method ensures that newly logged in users are correctly remembered, so while logged in then closing the browser and coming back
  you are still logged in when restarting/revisiting application
+
+-redirect_back_or and store_location used to forward users to their intended destination (eg. edit instead of users/1). Store the location
+ somewhere and then redirect to that location instead of the default.
+-store_location method puts requested URL in session variable under the key :forwarding_url, but only for a GET request. Preventing storing the forwarding
+ URL if a user submits a form when not logged in. Resulting redirect would issue a GET request to URL expecting POST, PATCH, DELETE, causing error.
+ The if request.get? prevents this from happening.
 =end
 

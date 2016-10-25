@@ -1,5 +1,10 @@
 source 'https://rubygems.org'
 
+#fake gem will provide us with fake user data for testing purposes (do not include in production)
+gem 'faker',          '1.6.6'
+#for pagination
+gem 'will_paginate',           '3.1.0'
+gem 'bootstrap-will_paginate', '0.0.10'
 #puma server instead of webrick for development environment
 gem 'puma'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
