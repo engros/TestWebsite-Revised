@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :logged_in_user, only: [:index, :edit, :update, :destroy] #arrange logged_in_user method to be called before any given actions
-  before_action :correct_user,   only: [:edit, :update] #arrange correct_user method to be called before anything below
-  before_action :admin_user,     only: :destroy #first check to see if this user is an admin before any deletions, only admins can do user deletions
+  before_action :correct_user,   only: [:edit, :update] #arrange correct_user method to be called before editing or updating
+  before_action :admin_user,     only: :destroy # arrange admin_user method to first check to see if this user is an admin before any deletions, only admins can do user deletions
 
   def index
     @users = User.where(activated: true).paginate(page: params[:page]) #paginate only activated users in chunks of 30 users per page
@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      @user.send_activation_email  #send an activation email to user's email using user.rb's send_activation_email method
+      @user.send_activation_email  #send an activation email to user's email using user.rb's send_activation_email method for new users
       flash[:info] = "Please check your email to activate your account."
       redirect_to root_url #redirect to home page
     else
@@ -27,9 +27,11 @@ class UsersController < ApplicationController
     end
   end
 
+  #displays an edit form
   def edit
   end
 
+ # can update attributes such as name, email, and password reset in database; when accessing database must use authenticate? in user model
   def update
     @user = User.find(params[:id])
     if @user.update_attributes(user_params)
@@ -48,7 +50,7 @@ class UsersController < ApplicationController
 
   private
 
-    def user_params #strong parameters adds security by only allowing changed to these parameters and nothing else like admin or password_digest in the database
+    def user_params #strong parameters adds security by only allowing changed to these parameters and nothing else like admin, activation_digest, or password_digest in the database
       params.require(:user).permit(:name, :email, :password,
                                    :password_confirmation) #include :admin to use users_controller_test to test for invalidity of cyber attack patch request for admin value change
     end
@@ -57,7 +59,7 @@ class UsersController < ApplicationController
 
     # Confirms a logged-in user.
     def logged_in_user
-      unless logged_in? #if not logged in then
+      unless logged_in? #instance method check if not logged in then
         store_location #call store_location method in session_helper.rb; store location of requested page
         flash[:danger] = "Please log in." #warn the user to log in first
         redirect_to login_url

@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by(email: params[:session][:email].downcase) #find email using Active Record find_by method using form_for submitted values of params hash
     if user && user.authenticate(params[:session][:password])#but only log in if a user with the given email both exists in the database and has the given password, exactly as required.
-      if user.activated? #checks to see if this user is activated
+      if user.activated? #instance method checks to see if this user is activated
         log_in user #if activated then auto login
         params[:session][:remember_me] == '1' ? remember(user) : forget(user) #if remember checkbox is checked, remember the user with cookie
         redirect_back_or user #go to profile page
@@ -23,7 +23,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    log_out if logged_in? #only logged out if logged in (two window used subtle bug check)
+    log_out if logged_in? #instance method checks only logged out if logged in (two window used subtle bug check)
     redirect_to root_url
   end
 end

@@ -1,8 +1,9 @@
 class User < ApplicationRecord
-  attr_accessor :remember_token, :activation_token #an accessible attribute for random generated token(persistent user;activating user account)
-  before_save :downcase_email #before_save is a method reference here that calls downcase_email method first before anything
+  attr_accessor :remember_token, :activation_token, :reset_token #an accessible attribute for random generated token(persistent user;activating user account)
+  before_save :downcase_email #before_save is a method reference here that calls downcase_email method first before saving email in database
   #before_save { self.email = email.downcase } #self is used here so that email is not a local variable, but instead available to whole User class not just in before_save method
-  before_create :create_activation_digest #before you completely create a user assign an activation toke and digest to the database
+  before_create :create_activation_digest #before you completely create a user and activated, calling the create method in users_controller.rb, assign an activation token and digest to the database
+
   validates :name, presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, length: { maximum: 255 },
@@ -11,7 +12,7 @@ class User < ApplicationRecord
   has_secure_password
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
 
-  # Returns the hash digest of the given string.
+  # Returns the hash digest of the given string. Used for tokens
   def User.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
         BCrypt::Engine.cost
@@ -29,10 +30,11 @@ class User < ApplicationRecord
     update_attribute(:remember_digest, User.digest(remember_token)) #to update the database we use the remember token that has been generated, encrypt it with digest method, then save to database
   end
 
-  # Returns true if the given token matches the digest. This is used for remembering and activating users
-  def authenticated?(attribute, token) #attribute takes in either remember or activation; token is generalized to take in remember_digest token or activation_digest token
-    digest = send("#{attribute}_digest") #string interpolation so it can either become remember_digest or activation_digest
-    return false if digest.nil?
+  # Every time you access  and change columns in User database, you always have to authenticate
+  # This authenticates the remember, activation, and password reset tokens. Returns true if the given token matches the digest
+  def authenticated?(attribute, token) #attribute takes in either remember, activation, password; token is generalized to take in remember_digest token or activation_digest token or password_reset token
+    digest = send("#{attribute}_digest") #string interpolation so it can either become remember_digest or activation_digest or password_reset_digest
+    return false if digest.nil? #this is evaluated and below code is not if digest variable is empty (ie. no method call for remember_digest using send method)
     BCrypt::Password.new(digest).is_password?(token) #encode token with hash and save into digest
   end
 
@@ -41,7 +43,7 @@ class User < ApplicationRecord
     update_attribute(:remember_digest, nil) #jsut sets the remember_digest to nil to forget user
   end
 
-  # Activates an account.
+  # Activates an account once you click on activation email link
   def activate
     #single call to update_columns, hits database once (Exercise 11.3.3.1)
     update_columns(activated: true, activated_at: Time.zone.now)
@@ -55,9 +57,27 @@ class User < ApplicationRecord
     UserMailer.account_activation(self).deliver_now
   end
 
+  # Sets the password reset attributes. Hashes the reset_token and saves to database
+  def create_reset_digest
+    self.reset_token = User.new_token
+    update_columns(reset_digest: User.digest(reset_token), reset_sent_at: Time.zone.now)
+    # update_attribute(:reset_digest,  User.digest(reset_token))
+    # update_attribute(:reset_sent_at, Time.zone.now)
+  end
+
+  # Sends password reset email.
+  def send_password_reset_email
+    UserMailer.password_reset(self).deliver_now
+  end
+
+  # Returns true if a password reset has expired.
+  def password_reset_expired?
+    reset_sent_at < 2.hours.ago #invalidate the password reset request if sent link expired earlier than 2 hours ago
+  end
+
   private
 
-    # Converts email to all lower-case. Run be before_save at the top.
+    # Converts email to all lower-case. Run by before_save at the top.
     def downcase_email
       email.downcase! #same as self.email = email.downcase
     end
@@ -67,7 +87,6 @@ class User < ApplicationRecord
       self.activation_token  = User.new_token
       self.activation_digest = User.digest(activation_token)
     end
-
 
 end
 

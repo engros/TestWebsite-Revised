@@ -41,7 +41,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_not is_logged_in?
     # Valid activation token
     get edit_account_activation_path(user.activation_token, email: user.email) #get activation token using find_by(email)
-    assert user.reload.activated? #once token is found, reload since activation token is taken from database;
+    assert user.reload.activated? #once token is found, reload since data has changed in database;
     follow_redirect!
     assert_template 'users/show' #go to user profile
     assert is_logged_in? #check if that valid user is now logged in
