@@ -6,12 +6,24 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+=begin
+#reset the database sequence of id primary key
+ActiveRecord::Base.connection.tables.each do |table|
+  result = ActiveRecord::Base.connection.execute("SELECT id FROM #{table} ORDER BY id DESC LIMIT 1") rescue ( puts "Warning: not procesing table #{table}. Id is missing?" ; next )
+  ai_val = result.any? ? result.first['id'].to_i + 1 : 1
+  puts "Resetting auto increment ID for #{table} to #{ai_val}"
+  ActiveRecord::Base.connection.execute("ALTER SEQUENCE #{table}_id_seq RESTART WITH #{ai_val}")
+end
+=end
+
 #populate database with faker gem users
 User.create!(name:  "Example User",
              email: "example@railstutorial.org",
              password:              "foobar",
              password_confirmation: "foobar",
-             admin: true)
+             admin: true,
+             activated: true, #test user Example user is initially activated
+             activated_at: Time.zone.now)
 
 99.times do |n|
   name  = Faker::Name.name
@@ -20,18 +32,12 @@ User.create!(name:  "Example User",
   User.create!(name:  name,
                email: email,
                password:              password,
-               password_confirmation: password)
+               password_confirmation: password,
+               activated: true, #other test users made by faker gem are also activated
+               activated_at: Time.zone.now)
 end
 
 
 
 
-#reset the database sequence of id primary key
-=begin
-ActiveRecord::Base.connection.tables.each do |table|
-  result = ActiveRecord::Base.connection.execute("SELECT id FROM #{table} ORDER BY id DESC LIMIT 1") rescue ( puts "Warning: not procesing table #{table}. Id is missing?" ; next )
-  ai_val = result.any? ? result.first['id'].to_i + 1 : 1
-  puts "Resetting auto increment ID for #{table} to #{ai_val}"
-  ActiveRecord::Base.connection.execute("ALTER SEQUENCE #{table}_id_seq RESTART WITH #{ai_val}")
-end
-=end
+

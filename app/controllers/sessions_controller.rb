@@ -6,9 +6,16 @@ class SessionsController < ApplicationController
   def create
     user = User.find_by(email: params[:session][:email].downcase) #find email using Active Record find_by method using form_for submitted values of params hash
     if user && user.authenticate(params[:session][:password])#but only log in if a user with the given email both exists in the database and has the given password, exactly as required.
-      log_in user # Log the user in by using sessionhelper's log_in method, passing user params
-      params[:session][:remember_me] == '1' ? remember(user) : forget(user) # Persistent user/cookie using sessionhelper's remember method, with remember me checkbox option; box value of 1 is to remember, box value of 0 is not to remember
-      redirect_back_or user #redirect to the intended page requested by the user after successful login, otherwise go to the protected page (home or profile)
+      if user.activated? #checks to see if this user is activated
+        log_in user #if activated then auto login
+        params[:session][:remember_me] == '1' ? remember(user) : forget(user) #if remember checkbox is checked, remember the user with cookie
+        redirect_back_or user #go to profile page
+      else #if not activated
+        message  = "Account not activated. "
+        message += "Check your email for the activation link."
+        flash[:warning] = message
+        redirect_to root_url #redirect to home page
+      end
     else
       flash.now[:danger] = 'Invalid email/password combination'
       render 'new'

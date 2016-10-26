@@ -1,7 +1,8 @@
 class User < ApplicationRecord
-  attr_accessor :remember_token #an accessible attribute for random generated token(persistent user)
-
-  before_save { self.email = email.downcase } #self is used here so that email is not a local variable, but instead available to whole User class not just in before_save method
+  attr_accessor :remember_token, :activation_token #an accessible attribute for random generated token(persistent user;activating user account)
+  before_save :downcase_email #before_save is a method reference here that calls downcase_email method first before anything
+  #before_save { self.email = email.downcase } #self is used here so that email is not a local variable, but instead available to whole User class not just in before_save method
+  before_create :create_activation_digest #before you completely create a user assign an activation toke and digest to the database
   validates :name, presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence: true, length: { maximum: 255 },
@@ -28,16 +29,46 @@ class User < ApplicationRecord
     update_attribute(:remember_digest, User.digest(remember_token)) #to update the database we use the remember token that has been generated, encrypt it with digest method, then save to database
   end
 
-  # Returns true if the given token matches the digest.
-  def authenticated?(remember_token) #note that this remember_token is a local method variable
-    return false if remember_digest.nil? #two browser used, logout subtle bug fix
-    BCrypt::Password.new(remember_digest).is_password?(remember_token) #compare remember_token with encrypted one in database
+  # Returns true if the given token matches the digest. This is used for remembering and activating users
+  def authenticated?(attribute, token) #attribute takes in either remember or activation; token is generalized to take in remember_digest token or activation_digest token
+    digest = send("#{attribute}_digest") #string interpolation so it can either become remember_digest or activation_digest
+    return false if digest.nil?
+    BCrypt::Password.new(digest).is_password?(token) #encode token with hash and save into digest
   end
 
   # Forgets a user.
   def forget
     update_attribute(:remember_digest, nil) #jsut sets the remember_digest to nil to forget user
   end
+
+  # Activates an account.
+  def activate
+    #single call to update_columns, hits database once (Exercise 11.3.3.1)
+    update_columns(activated: true, activated_at: Time.zone.now)
+    #could also separate the calls but this hits database twice
+    #update_attribute(:activated,    true)
+    #update_attribute(:activated_at, Time.zone.now)
+  end
+
+  # Sends activation email.
+  def send_activation_email
+    UserMailer.account_activation(self).deliver_now
+  end
+
+  private
+
+    # Converts email to all lower-case. Run be before_save at the top.
+    def downcase_email
+      email.downcase! #same as self.email = email.downcase
+    end
+
+    # Creates and assigns the activation token and digest. Run by before_create at the top
+    def create_activation_digest #before user creation completion, assign a token and digest to that user in the database for account activation
+      self.activation_token  = User.new_token
+      self.activation_digest = User.digest(activation_token)
+    end
+
+
 end
 
 
@@ -52,4 +83,5 @@ end
 # self is reference to User class and is used so that email and remember_token are not treated by Ruby as local method variable, but instead a variable available to the whole User class
 # note that self in User model is also used to refer to a user object instance not User class
 # to create persistent cookies (expires optionally) it must have: remember token  and user id
-# return keyword ignores anything below that method
+# return keyword ignores anything below that method and thus returns whatever is beside it
+# send("#{attribute}_digest") uses send method to lets us call a method with a name of our choice by “sending a message” to a given object (eg. a.send(:length) outputs 3)

@@ -4,11 +4,12 @@ class UsersController < ApplicationController
   before_action :admin_user,     only: :destroy #first check to see if this user is an admin before any deletions, only admins can do user deletions
 
   def index
-    @users = User.paginate(page: params[:page]) #pageinate users in chunks of 30 users per page
+    @users = User.where(activated: true).paginate(page: params[:page]) #paginate only activated users in chunks of 30 users per page
   end
 
   def show
-    @user = User.find(params[:id])
+    @user = User.find(params[:id]) #show that user profile  page using that user's id
+    redirect_to root_url and return unless @user.activated? #only go to home page if user is not yet activated (Exercise 11.3.3.2)
   end
 
   def new
@@ -18,9 +19,9 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      log_in @user #will login new user upon sign up
-      flash[:success] =  "Welcome to Mark's Sample App"
-      redirect_to @user #if new user is successfully save, go to profile page
+      @user.send_activation_email  #send an activation email to user's email using user.rb's send_activation_email method
+      flash[:info] = "Please check your email to activate your account."
+      redirect_to root_url #redirect to home page
     else
       render 'new' #if info entered is invalid re-render the new page
     end

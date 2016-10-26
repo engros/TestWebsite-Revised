@@ -24,7 +24,7 @@ module SessionsHelper
     elsif (user_id = cookies.signed[:user_id])
       #raise       # Use this to test sessions_helper_test.rb
       user = User.find_by(id: user_id)
-      if user && user.authenticated?(cookies[:remember_token])
+      if user && user.authenticated?(:remember, cookies[:remember_token]) #user.authenticated?(:attribute, token) and authenticated method from model user.rb; checks if digest and token are the same
         log_in user
         @current_user = user
       end
